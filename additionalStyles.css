@@ -135,6 +135,21 @@ body.text-light .team-card {
 .about-mission h4 { font-weight: 700; }
 .about-mission .mt-24 { margin-top: 24px; }
 .about-mission .mb-8 { margin-bottom: 8px; }
+.about-us-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (max-width: 560px) {
+  .about-us-container { grid-template-columns: 1fr; margin-top: 12px; }
+}
+.about-us-container.img {
+  width: 100%;
+  height: auto;
+}
+.about-us-text-cont {
+  padding: 0 0 0 24px;
+  margin: auto;
+}
 
 .section-override {
     margin-top: -100px;
