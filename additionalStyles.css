@@ -158,3 +158,23 @@ body.text-light .team-card {
 .footer-social-links i { font-size: 18px; line-height: 1; }
 .footer-social-links a { display: inline-flex; align-items: center; }
 .footer-social-links a:hover { opacity: .9; }
+
+.privacy-policy-page .body-wrap {
+  position: relative;
+}
+
+.privacy-policy-page .lang-switch {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: inline-flex;
+  gap: 8px;
+  z-index: 2;
+}
+
+@media (max-width: 640px) {
+  .privacy-policy-page .lang-switch {
+    top: 12px;
+    right: 12px;
+  }
+}
