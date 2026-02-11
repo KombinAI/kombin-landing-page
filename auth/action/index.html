@@ -158,6 +158,10 @@
     const oobCode = params.get("oobCode");
     const continueUrl = params.get("continueUrl");
 
+    if (window.location.search) {
+        history.replaceState({}, document.title, window.location.pathname);
+    }
+
     const statusRows = {
         loading: document.getElementById("status-loading"),
         success: document.getElementById("status-success"),
@@ -167,7 +171,7 @@
 
     const primaryCta = document.getElementById("primary-cta");
 
-    const allowedDomains = ["kombin.app", "kombin.fit"];
+    const allowedDomains = ["kombin.fit"];
 
     const getSafeContinueUrl = (rawUrl) => {
         if (!rawUrl) return null;
@@ -216,7 +220,7 @@
         }
 
         const safeContinueUrl = getSafeContinueUrl(continueUrl);
-        const successRedirect = safeContinueUrl || "https://kombin.app/";
+        const successRedirect = safeContinueUrl || "https://kombin.fit/";
 
         try {
             const app = initializeApp(firebaseConfig);
