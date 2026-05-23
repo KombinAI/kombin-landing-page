@@ -226,7 +226,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import { getAuth, applyActionCode } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-    import { firebaseConfig, hasFirebaseConfig } from "../../firebase-config.js";
+    import { getFirebaseConfig, hasFirebaseConfig } from "../../firebase-config.js";
 
     const translations = {
         en: {
@@ -262,8 +262,10 @@
     const params = new URLSearchParams(window.location.search);
     const mode = params.get("mode");
     const oobCode = params.get("oobCode");
+    const apiKey = params.get("apiKey");
     const continueUrl = params.get("continueUrl");
     const lang = params.get("lang");
+    const firebaseConfig = getFirebaseConfig(apiKey);
     const locale = String(lang || navigator.language || "en").toLowerCase().startsWith("tr") ? "tr" : "en";
     const t = translations[locale];
 
@@ -314,10 +316,12 @@
 
         try {
             /*
-             * Firebase email action links append mode, oobCode, continueUrl,
-             * and lang to this custom URL. For mode=verifyEmail, no signed-in
-             * user is required: applyActionCode(auth, oobCode) consumes the
-             * one-time code and marks that Firebase Auth email as verified.
+             * Firebase email action links append mode, oobCode, apiKey,
+             * continueUrl, and lang to this custom URL. For mode=verifyEmail,
+             * no signed-in user is required: applyActionCode(auth, oobCode)
+             * consumes the one-time code and marks that Firebase Auth email as
+             * verified. If no deploy-time Firebase config exists, the helper can
+             * use the apiKey from Firebase's action link for this one action.
              */
             const app = initializeApp(firebaseConfig);
             const auth = getAuth(app);
