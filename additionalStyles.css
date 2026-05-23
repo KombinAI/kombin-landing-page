@@ -159,11 +159,11 @@ body.text-light .team-card {
 .footer-social-links a { display: inline-flex; align-items: center; }
 .footer-social-links a:hover { opacity: .9; }
 
-.privacy-policy-page .body-wrap {
+.legal-page .body-wrap {
   position: relative;
 }
 
-.privacy-policy-page .lang-switch {
+.legal-page .lang-switch {
   position: absolute;
   top: 20px;
   right: 20px;
@@ -173,7 +173,7 @@ body.text-light .team-card {
 }
 
 @media (max-width: 640px) {
-  .privacy-policy-page .lang-switch {
+  .legal-page .lang-switch {
     top: 12px;
     right: 12px;
   }

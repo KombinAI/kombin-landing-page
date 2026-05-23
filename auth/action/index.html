@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Kombin – Action</title>
+    <title>Kombin | Email Verification</title>
     <link href="https://fonts.googleapis.com/css?family=Heebo:400,700|Oxygen:700" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,233 +13,326 @@
     <link rel="stylesheet" href="../../additionalStyles.css">
     <link rel="icon" type="image/png" href="../../dist/images/kombin_logo_elips.png">
     <style>
-        .action-shell {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 75vh;
+        :root {
+            --action-ink: #121014;
+            --action-muted: #625a61;
+            --action-line: rgba(197, 29, 94, 0.16);
+            --action-pink: #C51D5E;
+            --action-green: #179E5E;
+            --action-orange: #c96b3c;
         }
-        .action-card {
-            width: 100%;
-            max-width: 520px;
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 32px;
-            box-shadow: 0 18px 40px rgba(0,0,0,0.10);
-            border: 1px solid rgba(15,15,15,0.06);
-            text-align: center;
+
+        .auth-action-body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 20% 0%, rgba(197, 29, 94, 0.18), transparent 32%),
+                linear-gradient(135deg, #fff7fb 0%, #f7edf3 44%, #ffffff 100%);
         }
-        .action-card .logo {
-            width: 52px;
-            height: 52px;
-            margin: 0 auto 16px;
+
+        .auth-action-shell {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 28px;
         }
-        .status-title {
-            font-family: "Outfit", sans-serif;
-            font-weight: 700;
-            font-size: 28px;
-            margin: 0 0 12px;
-            color: #0a0a0a;
+
+        .auth-action-card {
+            width: min(100%, 560px);
+            display: grid;
+            gap: 26px;
+            padding: clamp(28px, 5vw, 48px);
+            border: 1px solid var(--action-line);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 24px 70px rgba(45, 25, 40, 0.14);
+            backdrop-filter: blur(18px);
         }
-        .status-message {
-            color: #4b4b4b;
-            margin: 0 0 24px;
-        }
-        .status-sub {
-            color: #6a6a6a;
-            margin: 0 0 24px;
-            font-size: 15px;
-        }
-        .status-icon {
+
+        .auth-action-brand {
             display: inline-flex;
+            width: fit-content;
             align-items: center;
-            justify-content: center;
-            width: 56px;
-            height: 56px;
+            gap: 12px;
+            color: var(--action-ink);
+            font-family: "Outfit", sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .auth-action-brand img {
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
-            margin: 4px auto 16px;
-            font-size: 28px;
-            font-weight: 700;
-            background: rgba(197, 29, 94, 0.08);
-            color: #C51D5E;
         }
-        .status-icon.success {
-            background: rgba(23, 158, 94, 0.12);
-            color: #179E5E;
+
+        .auth-action-copy {
+            display: grid;
+            gap: 14px;
         }
-        .status-icon.error {
-            background: rgba(212, 67, 67, 0.12);
-            color: #D44343;
+
+        .auth-action-eyebrow {
+            margin: 0;
+            color: var(--action-pink);
+            font-family: "Outfit", sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
-        .loader {
-            width: 34px;
-            height: 34px;
-            border: 3px solid rgba(197, 29, 94, 0.2);
-            border-top-color: #C51D5E;
+
+        .auth-action-title {
+            margin: 0;
+            color: var(--action-ink);
+            font-family: "Outfit", sans-serif;
+            font-size: clamp(36px, 8vw, 64px);
+            font-weight: 800;
+            line-height: 0.98;
+            letter-spacing: 0;
+        }
+
+        .auth-action-message {
+            margin: 0;
+            color: var(--action-muted);
+            font-size: clamp(16px, 2.5vw, 18px);
+            line-height: 1.65;
+        }
+
+        .status-visual {
+            position: relative;
+            width: 68px;
+            height: 68px;
             border-radius: 50%;
-            margin: 12px auto 18px;
-            animation: spin 1s linear infinite;
+            border: 2px solid rgba(197, 29, 94, 0.16);
+            background: #fff;
         }
+
+        .status-visual::before,
+        .status-visual::after,
+        .status-visual span {
+            position: absolute;
+            content: "";
+        }
+
+        .status-visual.is-loading {
+            border-top-color: var(--action-pink);
+            animation: spin 0.9s linear infinite;
+        }
+
+        .status-visual.is-loading span {
+            inset: 18px;
+            border-radius: inherit;
+            border: 1px solid rgba(197, 29, 94, 0.18);
+        }
+
+        .status-visual.is-success {
+            border-color: var(--action-green);
+            background: rgba(23, 158, 94, 0.08);
+        }
+
+        .status-visual.is-success::after {
+            width: 28px;
+            height: 14px;
+            left: 19px;
+            top: 23px;
+            border-left: 4px solid var(--action-green);
+            border-bottom: 4px solid var(--action-green);
+            transform: rotate(-45deg);
+        }
+
+        .status-visual.is-error,
+        .status-visual.is-unsupported {
+            border-color: var(--action-orange);
+            background: rgba(201, 107, 60, 0.08);
+        }
+
+        .status-visual.is-error::before,
+        .status-visual.is-error::after,
+        .status-visual.is-unsupported::before,
+        .status-visual.is-unsupported::after {
+            width: 30px;
+            height: 4px;
+            left: 17px;
+            top: 31px;
+            border-radius: 999px;
+            background: var(--action-orange);
+        }
+
+        .status-visual.is-error::before,
+        .status-visual.is-unsupported::before {
+            transform: rotate(45deg);
+        }
+
+        .status-visual.is-error::after,
+        .status-visual.is-unsupported::after {
+            transform: rotate(-45deg);
+        }
+
+        .auth-action-button[hidden] {
+            display: none;
+        }
+
+        .auth-action-button {
+            width: fit-content;
+        }
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        .status-row {
-            display: none;
-        }
-        .status-row.is-active {
-            display: block;
-        }
+
         @media (max-width: 560px) {
-            .action-card {
-                padding: 26px 20px;
+            .auth-action-shell {
+                align-items: stretch;
+                padding: 14px;
             }
-            .status-title {
-                font-size: 24px;
+
+            .auth-action-card {
+                align-content: center;
+                min-height: calc(100vh - 28px);
+                border-radius: 14px;
             }
         }
     </style>
 </head>
 
-<body class="is-boxed has-animations">
+<body class="is-boxed has-animations auth-action-body">
 <div class="body-wrap boxed-container">
-    <main>
-        <section class="section">
-            <div class="section-inner">
-                <div class="container-sm action-shell">
-                    <div class="action-card">
-                        <img class="logo" src="../../dist/images/kombin_logo_elips.png" alt="Kombin logo">
+    <main class="auth-action-shell" aria-live="polite">
+        <section class="auth-action-card">
+            <a class="auth-action-brand" href="../../index.html">
+                <img src="../../dist/images/kombin_logo_elips.png" alt="Kombin logo">
+                <span>Kombin</span>
+            </a>
 
-                        <div id="status-loading" class="status-row is-active">
-                            <div class="loader" aria-hidden="true"></div>
-                            <h1 class="status-title">Checking your link</h1>
-                            <p class="status-message">Please keep this page open while we verify your email.</p>
-                        </div>
-
-                        <div id="status-success" class="status-row">
-                            <div class="status-icon success">✓</div>
-                            <h1 class="status-title">Email verified</h1>
-                            <p class="status-message">Your account is verified and ready to use.</p>
-                        </div>
-
-                        <div id="status-invalid" class="status-row">
-                            <div class="status-icon error">!</div>
-                            <h1 class="status-title">Invalid link</h1>
-                            <p class="status-message">This verification link is missing or can’t be used.</p>
-                        </div>
-
-                        <div id="status-error" class="status-row">
-                            <div class="status-icon error">!</div>
-                            <h1 class="status-title">Verification failed</h1>
-                            <p class="status-message">This link has expired or was already used.</p>
-                            <p class="status-sub">Open the Kombin app and request a new verification email.</p>
-                        </div>
-
-                        <a id="primary-cta" class="button button-primary button-wide-mobile button-bordered" href="https://kombin.fit/" rel="noopener">Continue to Kombin</a>
-                    </div>
-                </div>
+            <div class="auth-action-copy">
+                <p id="state-eyebrow" class="auth-action-eyebrow">Account verification</p>
+                <h1 id="state-title" class="auth-action-title">Verifying your email</h1>
+                <p id="state-message" class="auth-action-message">
+                    Please keep this page open while we confirm your Kombin account.
+                </p>
             </div>
+
+            <div id="status-visual" class="status-visual is-loading" aria-hidden="true">
+                <span></span>
+            </div>
+
+            <a id="open-kombin" class="button button-primary button-wide-mobile button-bordered auth-action-button" href="https://kombin.fit" hidden rel="noopener">
+                Open Kombin
+            </a>
         </section>
     </main>
 </div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getAuth, checkActionCode, applyActionCode } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getAuth, applyActionCode } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { firebaseConfig, hasFirebaseConfig } from "../../firebase-config.js";
 
-    const firebaseConfig = {
-        apiKey: "REPLACE_WITH_FIREBASE_API_KEY",
-        authDomain: "REPLACE_WITH_FIREBASE_AUTH_DOMAIN",
-        projectId: "REPLACE_WITH_FIREBASE_PROJECT_ID",
-        appId: "REPLACE_WITH_FIREBASE_APP_ID"
+    const translations = {
+        en: {
+            eyebrow: "Account verification",
+            loadingTitle: "Verifying your email",
+            loadingMessage: "Please keep this page open while we confirm your Kombin account.",
+            successTitle: "Email verified",
+            successMessage: "Your Kombin account is confirmed. You can return to the beta and continue styling.",
+            errorTitle: "Verification link did not work",
+            errorMessage: "This link may be invalid, expired, missing its code, or already used. Request a new verification email from Kombin and try again.",
+            unsupportedTitle: "Action not supported",
+            unsupportedMessage: "This action is not supported on this page.",
+            configTitle: "Firebase is not configured",
+            configMessage: "Email verification is unavailable until the Firebase browser config is provided for this site.",
+            openKombin: "Open Kombin",
+        },
+        tr: {
+            eyebrow: "Hesap doğrulama",
+            loadingTitle: "E-postan doğrulanıyor",
+            loadingMessage: "Kombin hesabını onaylarken lütfen bu sayfayı açık tut.",
+            successTitle: "E-posta doğrulandı",
+            successMessage: "Kombin hesabın onaylandı. Betaya dönüp stilini oluşturmaya devam edebilirsin.",
+            errorTitle: "Doğrulama bağlantısı çalışmadı",
+            errorMessage: "Bu bağlantı geçersiz, süresi dolmuş, kodu eksik ya da daha önce kullanılmış olabilir. Kombin'den yeni bir doğrulama e-postası isteyip tekrar dene.",
+            unsupportedTitle: "İşlem desteklenmiyor",
+            unsupportedMessage: "This action is not supported on this page.",
+            configTitle: "Firebase yapılandırılmadı",
+            configMessage: "Bu site için Firebase tarayıcı yapılandırması sağlanana kadar e-posta doğrulama kullanılamaz.",
+            openKombin: "Kombin'i Aç",
+        },
     };
 
     const params = new URLSearchParams(window.location.search);
     const mode = params.get("mode");
     const oobCode = params.get("oobCode");
     const continueUrl = params.get("continueUrl");
+    const lang = params.get("lang");
+    const locale = String(lang || navigator.language || "en").toLowerCase().startsWith("tr") ? "tr" : "en";
+    const t = translations[locale];
 
-    if (window.location.search) {
-        history.replaceState({}, document.title, window.location.pathname);
+    document.documentElement.lang = locale;
+
+    const eyebrow = document.getElementById("state-eyebrow");
+    const title = document.getElementById("state-title");
+    const message = document.getElementById("state-message");
+    const visual = document.getElementById("status-visual");
+    const openButton = document.getElementById("open-kombin");
+
+    function setState(state, titleText, messageText) {
+        eyebrow.textContent = t.eyebrow;
+        title.textContent = titleText;
+        message.textContent = messageText;
+        visual.className = `status-visual is-${state}`;
+        openButton.hidden = state !== "success";
+        openButton.textContent = t.openKombin;
     }
 
-    const statusRows = {
-        loading: document.getElementById("status-loading"),
-        success: document.getElementById("status-success"),
-        invalid: document.getElementById("status-invalid"),
-        error: document.getElementById("status-error")
-    };
+    function getContinueUrl(rawUrl) {
+        if (!rawUrl) return "https://kombin.fit";
 
-    const primaryCta = document.getElementById("primary-cta");
-
-    const allowedDomains = ["kombin.fit"];
-
-    const getSafeContinueUrl = (rawUrl) => {
-        if (!rawUrl) return null;
         try {
             const url = new URL(rawUrl);
-            if (url.protocol !== "https:") return null;
-            const isAllowed = allowedDomains.some((domain) => (
-                url.hostname === domain || url.hostname.endsWith(`.${domain}`)
-            ));
-            return isAllowed ? url.toString() : null;
+            const blockedProtocols = new Set(["javascript:", "data:", "vbscript:"]);
+            return blockedProtocols.has(url.protocol) ? "https://kombin.fit" : url.href;
         } catch (error) {
-            return null;
+            return "https://kombin.fit";
         }
-    };
+    }
 
-    const setStatus = (key) => {
-        Object.values(statusRows).forEach((node) => node.classList.remove("is-active"));
-        statusRows[key].classList.add("is-active");
-    };
-
-    const setCta = (href, label) => {
-        primaryCta.href = href;
-        if (label) primaryCta.textContent = label;
-    };
-
-    const friendlyErrorMessage = (code) => {
-        switch (code) {
-            case "auth/expired-action-code":
-                return "This link has expired.";
-            case "auth/invalid-action-code":
-                return "This link is invalid or already used.";
-            case "auth/user-disabled":
-                return "This account is disabled.";
-            case "auth/user-not-found":
-                return "We couldn’t find this account.";
-            default:
-                return "We couldn’t verify this link.";
-        }
-    };
-
-    const run = async () => {
-        if (!mode || !oobCode || mode !== "verifyEmail") {
-            setStatus("invalid");
-            setCta("https://kombin.fit/", "Go to Kombin");
+    async function verifyEmailActionCode() {
+        if (mode !== "verifyEmail") {
+            setState("unsupported", t.unsupportedTitle, t.unsupportedMessage);
             return;
         }
 
-        const safeContinueUrl = getSafeContinueUrl(continueUrl);
-        const successRedirect = safeContinueUrl || "https://kombin.fit/";
+        if (!oobCode) {
+            setState("error", t.errorTitle, t.errorMessage);
+            return;
+        }
+
+        if (!hasFirebaseConfig(firebaseConfig)) {
+            setState("error", t.configTitle, t.configMessage);
+            return;
+        }
 
         try {
+            /*
+             * Firebase email action links append mode, oobCode, continueUrl,
+             * and lang to this custom URL. For mode=verifyEmail, no signed-in
+             * user is required: applyActionCode(auth, oobCode) consumes the
+             * one-time code and marks that Firebase Auth email as verified.
+             */
             const app = initializeApp(firebaseConfig);
             const auth = getAuth(app);
-            await checkActionCode(auth, oobCode);
             await applyActionCode(auth, oobCode);
-            setStatus("success");
-            setCta(successRedirect, "Open Kombin");
-        } catch (error) {
-            console.error("Email verification failed:", error);
-            const message = friendlyErrorMessage(error?.code);
-            const errorMessageNode = statusRows.error.querySelector(".status-message");
-            if (errorMessageNode) errorMessageNode.textContent = message;
-            setStatus("error");
-            setCta("https://kombin.fit/", "Go to Kombin");
-        }
-    };
 
-    run();
+            openButton.href = getContinueUrl(continueUrl);
+            setState("success", t.successTitle, t.successMessage);
+        } catch (error) {
+            console.error("Firebase email verification failed:", error);
+            setState("error", t.errorTitle, t.errorMessage);
+        }
+    }
+
+    setState("loading", t.loadingTitle, t.loadingMessage);
+    verifyEmailActionCode();
 </script>
 </body>
 </html>
