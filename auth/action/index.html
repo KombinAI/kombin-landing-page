@@ -216,7 +216,7 @@
                 <span></span>
             </div>
 
-            <a id="open-kombin" class="button button-primary button-wide-mobile button-bordered auth-action-button" href="https://kombin.fit" hidden rel="noopener">
+            <a id="open-kombin" class="button button-primary button-wide-mobile button-bordered auth-action-button" href="https://testflight.apple.com/join/9A87jyZa" hidden rel="noopener">
                 Open Kombin
             </a>
         </section>
@@ -259,11 +259,12 @@
         },
     };
 
+    const TESTFLIGHT_URL = "https://testflight.apple.com/join/9A87jyZa";
+
     const params = new URLSearchParams(window.location.search);
     const mode = params.get("mode");
     const oobCode = params.get("oobCode");
     const apiKey = params.get("apiKey");
-    const continueUrl = params.get("continueUrl");
     const lang = params.get("lang");
     const firebaseConfig = getFirebaseConfig(apiKey);
     const locale = String(lang || navigator.language || "en").toLowerCase().startsWith("tr") ? "tr" : "en";
@@ -284,18 +285,6 @@
         visual.className = `status-visual is-${state}`;
         openButton.hidden = state !== "success";
         openButton.textContent = t.openKombin;
-    }
-
-    function getContinueUrl(rawUrl) {
-        if (!rawUrl) return "https://kombin.fit";
-
-        try {
-            const url = new URL(rawUrl);
-            const blockedProtocols = new Set(["javascript:", "data:", "vbscript:"]);
-            return blockedProtocols.has(url.protocol) ? "https://kombin.fit" : url.href;
-        } catch (error) {
-            return "https://kombin.fit";
-        }
     }
 
     async function verifyEmailActionCode() {
@@ -327,7 +316,7 @@
             const auth = getAuth(app);
             await applyActionCode(auth, oobCode);
 
-            openButton.href = getContinueUrl(continueUrl);
+            openButton.href = TESTFLIGHT_URL;
             setState("success", t.successTitle, t.successMessage);
         } catch (error) {
             console.error("Firebase email verification failed:", error);
